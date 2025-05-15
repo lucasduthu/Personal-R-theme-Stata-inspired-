@@ -1,0 +1,496 @@
+      
+# PACKAGES 
+install.packages("readxl")
+library(readxl)
+install.packages("readr")
+install.packages("dplyr")
+library (readr)
+library(dplyr)
+install.packages("ggplot2")
+install.packages("ggthemes")
+library(ggthemes)
+library(ggplot2)
+install.packages("showtext")
+library(showtext)
+install.packages("sysfonts")
+library(sysfonts)
+install.packages("car")
+library(car)
+install.packages("sandwich")
+install.packages("lmtest")
+library(sandwich)
+library(lmtest)
+install.packages("modelsummary")
+install.packages("pandoc")
+library(modelsummary)
+library("pandoc")
+install.packages("glmnet")
+library(glmnet)
+install.packages(c("glmnet", "broom", "flextable", "officer"))
+library(glmnet)
+library(broom)
+library(flextable)
+library(officer)
+install.packages("rpart")
+install.packages("rpart.plot")
+library(rpart)
+library(rpart.plot)
+install.packages("forcats")
+library(forcats)
+install.packages("ggExtra")
+library(ggExtra)
+
+
+      # EXAMPLE DATASET
+df <- read_excel("Library/Mobile Documents/com~apple~CloudDocs/FAC/L3S5/Statistiques avancées/Projet S5/A envoyer au prof/Table_stata.xlsx")
+df <- df %>%
+  mutate(Annee = as.numeric(Date)) %>%
+  rename(
+    P_E   = "IPC (Energie) 2015=100",
+    P_A   = "IPC (Alimentation) 2015=100",
+    P_tt  = "IPC (Total) 2015=100",
+    P_nAE = "IPC (sauf A et E) 2015=100",
+    U_H   = "U (Hommes) % de la population active",
+    U_F   = "U (Femmes) % de la population active",
+    U_tt  = "U (Total) % de la population active",
+    migrant_F   = "Entrées d'immigrés permanents (Famille)",
+    migrant_FaT = "Entrées d'immigrés permanents (Familles accampagnant les travailleurs)",
+    migrant_L   = "Entrées d'immigrés permanents (Libre circulation)",
+    migrant_H   = "Entrées d'immigrés permanents (Humanitaire)",
+    migrant_A   = "Entrées d'immigrés permanents (Autres)",
+    migrant_tt  = "Entrées d'immigrés permanents (Total)",
+    migrant_T   = "Entrées d'immigrés permanents (Travail)",
+    AvgW        = "AVGW (Total)",
+    Z_2m        = "Prestations chômage, part du revenu précédent (Après 2mois) % du revenu précédant le chômage",
+    Z_6m        = "Prestations chômage, part du revenu précédent (Après 6mois) % du revenu précédant le chômage",
+    Z_1y        = "Prestations chômage, part du revenu précédent (Après 1an) % du revenu précédant le chômage",
+    Z_2y        = "Prestations chômage, part du revenu précédent (Après 2ans) % du revenu précédant le chômage",
+    Z_5y        = "Prestations chômage, part du revenu précédent (Après 5ans) % du revenu précédant le chômage"
+  )
+df <- df %>%
+  mutate(
+    country = as.factor(Pays)
+  )
+##################################################
+df$Var1 <- df$dist
+df$Var2 <- df$realSum
+##################################################
+
+
+
+
+
+      # IMPORT FONT
+font_add(family = "Arial", regular = "/Users/lucasduthu-paloumet/Library/Mobile Documents/com~apple~CloudDocs/Perso/font/arial/ARIAL.TTF", bold = "/Users/lucasduthu-paloumet/Library/Mobile Documents/com~apple~CloudDocs/Perso/font/arial/ARIALBD.TTF", italic = "/Users/lucasduthu-paloumet/Library/Mobile Documents/com~apple~CloudDocs/Perso/font/arial/ARIALI.TTF", bolditalic = "/Users/lucasduthu-paloumet/Library/Mobile Documents/com~apple~CloudDocs/Perso/font/arial/ARIALBI 1.TTF")
+showtext_auto()
+font_families()
+
+
+    # COLORS 
+Stata_blue <- colorRampPalette(c("#1A85FF", "white"))(11)
+scales::show_col(Stata_blue)
+Stata_pink <- colorRampPalette(c("#D41159", "white"))(11)
+scales::show_col(Stata_pink)
+Stata_green <- colorRampPalette(c("#00BF7F", "white"))(11)
+scales::show_col(Stata_green)
+Stata_yellow <- colorRampPalette(c("#FFD400", "white"))(11)
+scales::show_col(Stata_yellow)
+Stata_purple <- colorRampPalette(c("#4F2C99", "white"))(11)
+scales::show_col(Stata_purple)
+Stata_orange <- colorRampPalette(c("#FF6333", "white"))(11)
+scales::show_col(Stata_orange)
+Stata_skyblue <- colorRampPalette(c("#4DB7FF", "white"))(11)
+scales::show_col(Stata_skyblue)
+Stata_darkred <- colorRampPalette(c("#7C0015", "white"))(11)
+scales::show_col(Stata_darkred)
+Stata_cyan <- colorRampPalette(c("#0FEFAF", "white"))(11)
+scales::show_col(Stata_cyan)
+Stata_mandarine <- colorRampPalette(c("#FAA307", "white"))(11)
+scales::show_col(Stata_mandarine)
+Stata_lavender <- colorRampPalette(c("#758BFD", "white"))(11)
+scales::show_col(Stata_lavender)
+Stata_skin <- colorRampPalette(c("#FED9B7", "white"))(11)
+scales::show_col(Stata_skin)
+Stata_darkblue <- colorRampPalette(c("#08234C", "white"))(11)
+scales::show_col(Stata_darkblue)
+Stata_lightpink <- colorRampPalette(c("#F88DAD", "white"))(11)
+scales::show_col(Stata_lightpink)
+Stata_darkcyan <- colorRampPalette(c("#0F5156", "white"))(11)
+scales::show_col(Stata_darkcyan)
+
+
+Stata_color_theme <- colorRampPalette(c("#1A85FF", "#D41159", "#00BF7F", "#FFD400", "#4F2C99", 
+                                        "#FF6333", "#4DB7FF", "#7C0015", "#0FEFAF", "#FAA307", 
+                                        "#758BFD", "#FED9B7", "#08234C", "#F88DAD", "#0F5156"))(15)
+scales::show_col(Stata_color_theme)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # SINGLE BOXPLOT THEME
+##########################################
+df <- dataset      
+
+df$Var1 <- df$Var1     
+df$Var2 <- df$Var2
+
+Var1_label <- "Var1 label"
+Var2_label <- "Var2 label"
+Graph_title <- "Title"
+##########################################
+my_theme_stata <- function() {
+  theme_classic() +
+    theme(axis.line = element_line(color = "black",
+                                   linewidth = 0.3), 
+          panel.grid.major.y = element_line(color = "#F1F1F2", 
+                                            linewidth = 0.3, 
+                                            linetype = "longdash"), 
+          axis.title.x = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"), 
+          axis.title.y = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"),
+          axis.text.x = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          axis.text.y = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          legend.text = element_text(family = "Arial"),
+          legend.title = element_text(family = "Arial"),
+          axis.ticks = element_blank(), 
+          plot.title = element_text(size = 12, 
+                                    family = "Arial", 
+                                    hjust = 0.5),
+          plot.subtitle = element_text(family = "Arial", 
+                                       size = 10),
+          plot.margin = ggplot2::margin(1, 1, 1, 1, "cm") ) }
+df$Var1 <- as.factor(df$Var1)
+showtext_begin()
+ggplot(df, aes(x = Var1,
+                       y = Var2)) +
+  geom_boxplot(position = position_dodge(width = 0.6), 
+               width = 0.7, 
+               size = 0.4, 
+               outlier.size = 1, 
+               outlier.shape = 1,
+               outlier.alpha = 0.3,
+               color = Stata_blue[1],
+               fill = Stata_blue[5] ) +
+  stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(width = 0.8)) +
+  labs(title = Graph_title, 
+       x = Var1_label, 
+       y = Var2_label ) + 
+  my_theme_stata()
+
+#OPTIONS : 
+#scale_y_log10() +
+#  coord_cartesian(ylim = c(min = 50, 
+#                           max = 5000) ) + 
+
+
+
+
+
+
+
+      # MULT BOXPLOT 
+##########################################
+df <- df      
+
+df$Var1 <- df$Var1     
+df$Var2 <- df$Var2
+df$Var3 <- df$Var3
+
+Var1_label <- "Var1 label"
+Var2_label <- "Var2 label"
+Var3_label <- "Var3 label"
+
+Var3_sublabel1 <- "Var3 sublabel1"
+Var3_sublabel2 <- "Var3 sublabel2"
+Var3_sublabel3 <- "Var3 sublabel3"
+
+Graph_title <- "Title"
+##########################################
+my_theme_stata <- function() {
+  theme_classic() +
+    theme(axis.line = element_line(color = "black",
+                                   linewidth = 0.3), 
+          panel.grid.major.y = element_line(color = "#F1F1F2", 
+                                            linewidth = 0.3, 
+                                            linetype = "longdash"), 
+          axis.title.x = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"), 
+          axis.title.y = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"),
+          axis.text.x = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          axis.text.y = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          legend.text = element_text(family = "Arial"),
+          legend.title = element_text(family = "Arial"),
+          axis.ticks = element_blank(), 
+          plot.title = element_text(size = 12, 
+                                    family = "Arial", 
+                                    hjust = 0.5),
+          plot.subtitle = element_text(family = "Arial", 
+                                       size = 10),
+          plot.margin = ggplot2::margin(1, 1, 1, 1, "cm") ) }
+df$Var1 <- as.factor(df$Var1)
+ggplot(df, aes(x = Var1, 
+               y = Var2, 
+               color = Var3, 
+               fill = Var3)) +
+  stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(width = 0.8)) +
+  geom_boxplot(position = position_dodge(width = 0.8), 
+               width = 0.7,
+               size = 0.4, 
+               outlier.size = 1, 
+               outlier.shape = 1, 
+               outlier.alpha = 0.3) +
+  scale_color_manual(values = c("Entire home/apt" = Stata_blue[1], 
+                                "Private room" = Stata_pink[1], 
+                                "Shared room" = Stata_green[1]), 
+                     labels = c("Entire home/apt" = "Entire Place", 
+                                "Private room" = "Private Room", 
+                                "Shared room" = "Shared Room")) +
+  scale_fill_manual(values = c("Entire home/apt" = Stata_blue[5], 
+                               "Private room" = Stata_pink[5], 
+                               "Shared room" = Stata_green[5]), 
+                    labels = c("Entire home/apt" = "Entire Place", 
+                               "Private room" = "Private Room", 
+                               "Shared room" = "Shared Room")) +
+  labs(title = Graph_title,
+       x = Var1_label, 
+       y = Var2_label, 
+       color = Var3_label, 
+       fill = Var3_label) +
+  my_theme_stata() 
+
+#OPTIONS : 
+#scale_y_log10() +
+#  coord_cartesian(ylim = c(min = 50, 
+#                           max = 5000) ) + 
+
+
+
+
+
+
+
+
+
+
+      # SIMPLE SCATTER GRAPH W/ TWO REGRESSION CURVES
+
+##########################################
+df <- Table_stata      
+
+df$Var1 <- df$ "U (Total) % de la population active"
+df$Var2 <- df$"AVGW (Total)"    
+
+Var1_label <- "Var1 label"
+Var2_label <- "Var2 label"
+
+
+Graph_title <- "Title"
+##########################################
+my_theme_stata <- function() {
+  theme_classic() +
+    theme(axis.line = element_line(color = "black",
+                                   linewidth = 0.3), 
+          panel.grid.major.y = element_line(color = "#F1F1F2", 
+                                            linewidth = 0.3, 
+                                            linetype = "longdash"), 
+          panel.grid.major.x = element_line(color = "#F1F1F2", 
+                                            linewidth = 0.3, 
+                                            linetype = "longdash"), 
+          axis.title.x = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"), 
+          axis.title.y = element_text(size = 10, 
+                                      vjust = 0, 
+                                      family = "Arial"),
+          axis.text.x = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          axis.text.y = element_text(size = 10, 
+                                     vjust = 0.1, 
+                                     family = "Arial"), 
+          legend.text = element_text(family = "Arial"),
+          legend.title = element_text(family = "Arial"),
+          axis.ticks = element_blank(), 
+          plot.title = element_text(size = 12, 
+                                    family = "Arial", 
+                                    hjust = 0.5),
+          plot.subtitle = element_text(family = "Arial", 
+                                       size = 10),
+          plot.margin = ggplot2::margin(1, 1, 1, 1, "cm")) }
+
+df$Var1 <- as.numeric(df$Var1)
+df$Var2 <- as.numeric(df$Var2)
+p <- {
+ggplot(df ,aes(x = Var1, y = Var2)) + 
+  geom_point(color = Stata_color_theme[1], 
+             alpha = 0.6, 
+             size = 1) + 
+  geom_smooth(color = Stata_color_theme[2], 
+              method = "lm", 
+              se = FALSE, linewidth = 0.5) + 
+  geom_smooth(color = Stata_color_theme[3], 
+              method = "lm", 
+              se = FALSE, 
+              formula = y ~ log(x), 
+              linewidth = 0.5) + 
+  labs(title = Graph_title,
+       x = Var1_label, 
+       y = Var2_label) +
+  my_theme_stata() + 
+  scale_y_log10() +
+  coord_cartesian(ylim = c(min = 50,
+                           max = 5000) ) + plot.margin = unit(c(1, 1, 1, 1), "cm")
+}
+plot(p)  
+
+  # BONUS : ADD DENSITY PLOT 
+ggMarginal(p, 
+           type = "boxplot", 
+           fill = Stata_blue[5], 
+           color = Stata_blue[1], 
+           margins = "both", 
+           size = 10, 
+           outlier.size = 1, 
+           outlier.shape = 1, 
+           outlier.alpha = 0.3
+           )
+
+ggMarginal(p, 
+           type = "histogram", 
+           fill = Stata_blue[1], 
+           color = Stata_blue[1], 
+           margins = "both", 
+           size = 10
+)
+
+ggMarginal(p, 
+           type = "density", 
+           fill = Stata_blue[1], 
+           color = Stata_blue[1], 
+           margins = "both", 
+           size = 10
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # K-MEANS CLUSTER GRAPH
+
+# Données
+data <- iris[, 1:2]
+km <- kmeans(data, centers = 3)
+data$cluster <- as.factor(km$cluster)
+
+# Créer une grille de points
+xrange <- seq(min(data[,1]) - 0.5, max(data[,1]) + 0.5, length.out = 200)
+yrange <- seq(min(data[,2]) - 0.5, max(data[,2]) + 0.5, length.out = 200)
+grid <- expand.grid(Sepal.Length = xrange, Sepal.Width = yrange)
+# Prédire le cluster de chaque point de la grille
+grid$cluster <- as.factor(predict(km, newdata = grid))  # ATTENTION : predict() ne marche pas sur kmeans nativement
+
+# Solution : créer une fonction de prédiction manuelle
+predict_kmeans <- function(object, newdata) {
+  centers <- object$centers
+  apply(newdata, 1, function(row) {
+    which.min(colSums((t(centers) - row)^2))
+  })
+}
+grid$cluster <- as.factor(predict_kmeans(km, grid))
+
+# Afficher
+ggplot() +
+  geom_point(data = data, aes(x = Sepal.Length, y = Sepal.Width, color = cluster), size = 2, alpha = 0.6) +
+  my_theme_stata() +
+  scale_color_manual(values = c("1" = Stata_blue[1], 
+                                "2" = Stata_pink[1], 
+                                "3" = Stata_green[1] )) + 
+  labs(title = "Champ d'application des clusters (zones d'influence)")
+
+
+    # OPTION : TILE AND K-MEANS POINTS 
+#geom_tile(data = grid, aes(x = Sepal.Length, y = Sepal.Width, fill = cluster), alpha = 0.2) +
+#  geom_point(data = as.data.frame(km$centers), aes(x = Sepal.Length, y = Sepal.Width), shape = 8, size = 3, color = "black") +
+#   scale_fill_manual(values = c("1" = Stata_blue[1], "2" = Stata_pink[1],"3" = Stata_green[1] )) + 
+
+
+
+
+
+
+      # BARCHART EMPILÉ
+
+df$Var1 <- df$Var1
+
+
+ggplot(df, aes(x = factor(person_capacity), fill = room_type)) +
+  geom_bar(position = 'stack', width = 0.97) +
+  labs(
+    title = "Distribution des logements selon le nombre de chambres",
+    x = "Nombre de chambres",
+    y = "Nombre de logements"
+  ) +
+  scale_color_manual(values = c("Entire home/apt" = Stata_blue[1], 
+                                "Private room" = Stata_pink[1], 
+                                "Shared room" = Stata_green[1]), 
+                     labels = c("Entire home/apt" = "Entire Place", 
+                                "Private room" = "Private Room", 
+                                "Shared room" = "Shared Room")) +
+  scale_fill_manual(values = c("Entire home/apt" = Stata_blue[1], 
+                               "Private room" = Stata_pink[1], 
+                               "Shared room" = Stata_green[1]), 
+                    labels = c("Entire home/apt" = "Entire Place", 
+                               "Private room" = "Private Room", 
+                               "Shared room" = "Shared Room")) +
+  my_theme_stata()
+
+
+
+
+
+
+
+
+
+
