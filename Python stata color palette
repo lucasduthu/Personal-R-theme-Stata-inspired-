@@ -1,0 +1,46 @@
+
+# STATA COLORS
+stata_blue = '#1A85FF'
+stata_pink = '#D41159'
+stata_green = '#00BF7F'
+stata_yellow = '#FFD400'
+stata_purple = '#4F2C99'
+stata_orange = '#FF6333'
+stata_skyblue = '#4DB7FF'
+stata_darkred = '#7C0015'
+stata_cyan = '#0FEFAF'
+      # Gradient palettes
+palette_stata_blue = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_blue", [stata_blue, "white"])([i/9 for i in range(10)]))
+palette_stata_green = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_green", [stata_green, "white"])([i/9 for i in range(10)]))
+palette_stata_yellow = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_yellow", [stata_yellow, "white"])([i/9 for i in range(10)]))
+palette_stata_purple = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_purple", [stata_purple, "white"])([i/9 for i in range(10)]))
+palette_stata_orange = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_orange", [stata_orange, "white"])([i/9 for i in range(10)]))
+palette_stata_skyblue = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_skyblue", [stata_skyblue, "white"])([i/9 for i in range(10)]))
+palette_stata_darkred = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_darkred", [stata_darkred, "white"])([i/9 for i in range(10)]))
+palette_stata_cyan = sns.color_palette(LinearSegmentedColormap.from_list("palette_stata_cyan", [stata_cyan, "white"])([i/9 for i in range(10)]))
+
+      # Define color wheel
+def show_color_wheel(palette, title="Color Wheel"):
+    n = len(palette)
+    theta = np.linspace(0, 2 * np.pi, n + 1)
+    radii = [1] * n
+
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'}, figsize=(6, 6))
+    bars = ax.bar(theta[:-1], radii, width=2 * np.pi / n, bottom=0.0, color=palette, edgecolor='white', linewidth=1)
+    ax.set_axis_off()
+    plt.title(title, y=1.05)
+    plt.show()
+      # Plot color wheels
+show_color_wheel(palette_stata_blue, title="palette_stata_blue") 
+show_color_wheel(palette_stata_green, title="palette_stata_green")
+show_color_wheel(palette_stata_yellow, title="palette_stata_yellow")
+show_color_wheel(palette_stata_purple, title="palette_stata_purple")
+show_color_wheel(palette_stata_orange, title="palette_stata_orange")
+show_color_wheel(palette_stata_skyblue, title="palette_stata_skyblue")
+show_color_wheel(palette_stata_darkred, title="palette_stata_darkred")
+show_color_wheel(palette_stata_cyan, title="palette_stata_cyan")
+
+
+
+
+
